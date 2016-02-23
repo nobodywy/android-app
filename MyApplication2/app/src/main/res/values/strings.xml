@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="log">登录</string>
+    <string name="phoneName">手机号</string>
+    <string name="idenifyingCode">验证码</string>
+    <string name="idenifyingPhoneCode">手机短信验证码</string>
+</resources>
