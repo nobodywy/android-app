@@ -346,8 +346,9 @@ public class MainActivity extends ActionBarActivity {
                     startActivity(intent);
 
                     finish();
-
                     break;
+                case 13:
+                    Log.v("tag","gethandler");
                 default:
                     super.handleMessage(msg);
                     break;

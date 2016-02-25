@@ -6,14 +6,59 @@
     <TextView
         android:id="@+id/navi"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70px"
         android:textSize="60px"
         android:gravity="center"
-        android:text="导航栏"/>
+        android:text="导航栏"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/button5"
+        android:layout_alignEnd="@+id/button5" />
     <ListView
         android:id="@+id/list_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="600px"
+        android:layout_below="@+id/textView8"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/button5"
+        android:layout_alignEnd="@+id/button5">
 
     </ListView>
+
+    <ListView
+        android:id="@+id/list_item_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView9"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+    </ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="70px"
+        android:text="搜索设备"
+        android:id="@+id/button5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60px"
+        android:text="已配对设备"
+        android:id="@+id/textView8"
+        android:layout_below="@+id/navi"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60px"
+        android:text="搜索到附近设备"
+        android:id="@+id/textView9"
+        android:layout_below="@+id/list_item"
+        android:layout_alignRight="@+id/button5"
+        android:layout_alignEnd="@+id/button5" />
 </RelativeLayout>

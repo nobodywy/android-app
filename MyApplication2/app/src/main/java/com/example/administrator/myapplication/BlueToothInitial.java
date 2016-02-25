@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.http.AndroidHttpClient;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,12 +46,28 @@ public class BlueToothInitial {
         }
     }
 
+    List<Bluetoothdevice> bluetoothdeviceslist = new ArrayList<Bluetoothdevice>();//匹配设备列表
+    public List<Bluetoothdevice> getBluetoothdeviceslist() {
+        return bluetoothdeviceslist;
+    }
+
+    List<Bluetoothdevice> bluetoothdeviceSearchList = new ArrayList<Bluetoothdevice>(); //搜索设备列表
+
+    public void setBluetoothdeviceSearchList(List<Bluetoothdevice> bluetoothdeviceSearchList) {
+        this.bluetoothdeviceSearchList = bluetoothdeviceSearchList;
+    }
+
+    public List<Bluetoothdevice> getBluetoothdeviceSearchList() {
+        return bluetoothdeviceSearchList;
+    }
+
+    Set<BluetoothDevice> pairedDevices = new HashSet<BluetoothDevice>();
+
     public void getPairedDevice(){
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        //ArrayAdapter bluetoothadpater = new ArrayAdapter();
-        if(pairedDevices.size()>0){
+        pairedDevices = bluetoothAdapter.getBondedDevices();
+        if(pairedDevices != null){
             for(BluetoothDevice device : pairedDevices){
-               bluetoothdeviceslist.add(new Bluetoothdevice(device.getName(),device.getAddress()));
+               bluetoothdeviceslist.add(new Bluetoothdevice(device.getName()+"",device.getAddress()+""));
             }
         }
     }
@@ -62,13 +83,6 @@ public class BlueToothInitial {
         }
     }
 
-
-    public List<Bluetoothdevice> getBluetoothdeviceslist() {
-        getPairedDevice();
-        return bluetoothdeviceslist;
-    }
-
-    List<Bluetoothdevice> bluetoothdeviceslist = new ArrayList<Bluetoothdevice>();
 
     public static class mdeviceAdapter extends BaseAdapter{
 
@@ -107,6 +121,42 @@ public class BlueToothInitial {
             return view;
         }
     }
+
+    //发出广播搜索蓝牙设备
+
+    Handler mhandler = new Handler(Looper.getMainLooper());
+    Message devicemessage = new Message();
+    BroadcastReceiver mreceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Bluetoothdevice mdevice = new Bluetoothdevice(device.getName()+"" ,device.getAddress()+"");
+                if(!removeDuplicate(bluetoothdeviceSearchList,mdevice)){
+                    bluetoothdeviceSearchList.add(mdevice);
+                    devicemessage = new Message();
+                    devicemessage.what = 13;//更新搜索到设备列表
+                    mhandler.sendMessage(devicemessage);
+                    Log.v("tag","得到searchdevice:"+device.getName()+" "+device.getAddress());
+                }
+            }else if(bluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)){
+                Log.v("tag","discoveryFinished");
+            }
+        }
+    };
+
+    //去重list重复项
+    public boolean removeDuplicate(List<Bluetoothdevice> list , Bluetoothdevice mdevice){
+        if(list.contains(mdevice)){
+            return true;//存在重复项
+        }else{
+            return false;//不存在
+        }
+    }
+
+
+
 
 
 }
