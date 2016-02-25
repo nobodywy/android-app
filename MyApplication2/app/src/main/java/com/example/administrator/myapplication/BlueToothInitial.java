@@ -148,13 +148,13 @@ public class BlueToothInitial {
 
     //去重list重复项
     public boolean removeDuplicate(List<Bluetoothdevice> list , Bluetoothdevice mdevice){
-        if(list.contains(mdevice)){
-            return true;//存在重复项
-        }else{
-            return false;//不存在
+        for(int i = 0;i < list.size() ; i++){
+            if(list.get(i).deviceAderess.equals(mdevice.deviceAderess)){
+                return true;
+            }
         }
+        return false;
     }
-
 
 
 

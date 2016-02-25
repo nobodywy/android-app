@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -90,9 +91,17 @@ public class SelectBlueToothDeviceActivity extends Activity {
                     }
                 };
 
-                //更新搜索列表
+                listSearchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Log.v("tag","点击");
+                    }
+                });
+
             }
         });
+
+
 
 
 
